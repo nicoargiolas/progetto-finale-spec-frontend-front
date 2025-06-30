@@ -1,6 +1,6 @@
 import { createContext, useState, useEffect } from "react";
 
-const GlobalContext = createContext();
+export const GlobalContext = createContext();
 
 export default function GlobalProvider({ children }) {
     const [players, setPlayers] = useState([]);
@@ -14,10 +14,9 @@ export default function GlobalProvider({ children }) {
     async function getPlayers() {
         try {
             const response = await fetchJson(`${import.meta.env.VITE_API_URL}/players`);
-            console.log(`Risposta`, response);
             setPlayers(response)
         } catch (error) {
-            throw new Error(`Impossibile recuperare i giocatori`)
+            throw new Error(`Impossibile recuperare i giocatori`);
         }
     }
 
