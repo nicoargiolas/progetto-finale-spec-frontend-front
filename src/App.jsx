@@ -10,6 +10,7 @@ import GlobalProvider from "./context/GlobalContext";
 // Importazione pagine
 import HomePage from './pages/HomePage';
 import PlayerDetails from "./pages/PlayerDetail";
+import ComparePage from "./pages/ComparePage";
 
 // Importazione CSS
 import './App.css'
@@ -23,6 +24,7 @@ function App() {
             <Route element={<DefaultLayout />}>
               <Route index element={<HomePage />} />
               <Route path="/players/:id" element={<PlayerDetails />} />
+              <Route path="/compare" element={<ComparePage />} />
             </Route>
           </Routes>
         </BrowserRouter>
