@@ -1,14 +1,75 @@
-import { useContext } from "react";
+import { useContext, useEffect, useState } from "react";
 import { GlobalContext } from "../context/GlobalContext";
 import { NavLink } from "react-router-dom";
 
 export default function HomePage() {
     const { players } = useContext(GlobalContext);
+    const [playersToShow, setPlayersToShow] = useState([]);
+    const [searchQuery, setSearchQuery] = useState("");
+    const [selectedCategory, setSelectedCategory] = useState("all");
+
+    useEffect(() => {
+        setPlayersToShow(players)
+    }, [players]);
+
+    async function fetchJson(url) {
+        const response = await fetch(url);
+        const data = await response.json();
+        return data
+    };
+
+    async function applyFilters(query, category) {
+        // Se la query è vuota e la categoria è tutte setto direttamente con tutti i giocatori e faccio return
+        if (query.trim() === "" && category === "all") {
+            setPlayersToShow(players);
+            return;
+        }
+
+        // Inizializzo l'URL
+        let url = `${import.meta.env.VITE_API_URL}/players`;
+        // Se la query esiste la aggiungo all'url
+        if (query.trim() !== "") {
+            url += `?search=${query.trim()}`
+        }
+        // Se la categoria e la query esistono aggiungo category con &
+        if (category !== "all" && query.trim() !== "") {
+            url += `&category=${category}`
+        }
+        // Se la categoria esiste ma la query non esiste aggiungo category con ?
+        else if (category !== "all" && query.trim() === "") {
+            url += `?category=${category}`
+        }
+
+        try {
+            const response = await fetchJson(url);
+            setPlayersToShow(response)
+        } catch (error) {
+            console.error(`Impossibile recuperare i giocatori: ${error}`);
+        }
+    }
+
     return (
         <>
+            <div>
+                <input placeholder="Cerca..." type="text" value={searchQuery}
+                    onChange={e => {
+                        setSearchQuery(e.target.value);
+                        applyFilters(e.target.value, selectedCategory);
+                    }} />
+                <select value={selectedCategory}
+                    onChange={e => {
+                        setSelectedCategory(e.target.value);
+                        applyFilters(searchQuery, e.target.value);
+                    }}
+                >
+                    <option value="all"> Tutte </option>
+                    <option value="ATP"> ATP </option>
+                    <option value="WTA"> WTA </option>
+                </select>
+            </div>
             <div className="player-list">
                 <ul>
-                    {players.map(p => <NavLink to={`/players/${p.id}`}
+                    {playersToShow.map(p => <NavLink to={`/players/${p.id}`}
                         key={p.id}><li>{p.title} <span>{p.category} </span></li></NavLink>)}
                 </ul>
             </div>
