@@ -1,10 +1,12 @@
-import { useEffect, useState } from "react";
+import { useContext, useEffect, useState } from "react";
 import { useParams, NavLink } from "react-router-dom"
+import { GlobalContext } from "../context/GlobalContext";
 
 export default function PlayerDetails() {
     const { id } = useParams();
     const [player, setPlayer] = useState({});
     const [loading, setLoading] = useState(true);
+    const { isFavorite, handleToggle } = useContext(GlobalContext);
 
     async function fetchJson(url) {
         const response = await fetch(url);
@@ -36,6 +38,10 @@ export default function PlayerDetails() {
         <>
             {!loading &&
                 <div className="player-detail">
+                    <button onClick={() => handleToggle(player)}>
+                        {isFavorite(player.id) ? "Rimuovi dai preferiti" : "Aggiungi ai preferiti"}
+                    </button>
+
                     <h1>{player.title}</h1>
                     <img src={player.image || '/placeholder.jpg'} alt={player.title} />
 

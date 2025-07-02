@@ -4,7 +4,9 @@ export const GlobalContext = createContext();
 
 export default function GlobalProvider({ children }) {
     const [players, setPlayers] = useState([]);
+    const [favorites, setFavorites] = useState([]);
 
+    // Fetch per i giocatori
     async function fetchJson(url) {
         const response = await fetch(url);
         const data = await response.json();
@@ -26,10 +28,35 @@ export default function GlobalProvider({ children }) {
 
     useEffect(() => {
         console.log("Giocatori aggiornati", players);
-    }, [players])
+    }, [players]);
+
+
+    // Gestione wishlist
+    const addFavorite = (player) => {
+        setFavorites(prev => [...prev, player])
+    }
+
+    const removeFavorite = (id) => {
+        setFavorites(prev => prev.filter(p => p.id !== id))
+    }
+
+    const isFavorite = (id) => {
+        return favorites.some(p => p.id === id)
+    }
+
+    const handleToggle = (player) => {
+        isFavorite(player.id) ? removeFavorite(player.id) : addFavorite(player);
+    }
 
     return (
-        <GlobalContext.Provider value={{ players }}>
+        <GlobalContext.Provider value={{
+            players,
+            favorites,
+            addFavorite,
+            removeFavorite,
+            isFavorite,
+            handleToggle
+        }}>
             {children}
         </GlobalContext.Provider>
     );

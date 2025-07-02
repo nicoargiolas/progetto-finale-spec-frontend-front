@@ -3,13 +3,14 @@ import { GlobalContext } from "../context/GlobalContext";
 import { NavLink } from "react-router-dom";
 
 export default function HomePage() {
-    const { players } = useContext(GlobalContext);
+    const { players, isFavorite, handleToggle } = useContext(GlobalContext);
     const [playersToShow, setPlayersToShow] = useState([]);
     const [searchQuery, setSearchQuery] = useState("");
     const [selectedCategory, setSelectedCategory] = useState("all");
     const [sortOrder, setSortOrder] = useState(1);
     const [sortBy, setSortBy] = useState("category");
 
+    // FILTRI
     useEffect(() => {
         setPlayersToShow(players)
     }, [players]);
@@ -50,6 +51,8 @@ export default function HomePage() {
         }
     }
 
+
+    // ORDINAMENTO
     const handleSort = (rule) => {
         if (rule === sortBy) {
             setSortOrder(sortOrder * -1)
@@ -71,7 +74,8 @@ export default function HomePage() {
 
             return result * sortOrder
         })
-    }, [playersToShow, sortOrder, sortBy])
+    }, [playersToShow, sortOrder, sortBy]);
+
 
     return (
         <>
@@ -96,8 +100,13 @@ export default function HomePage() {
             </div>
             <div className="player-list">
                 <ul>
-                    {playersToShow.map(p => <NavLink to={`/players/${p.id}`}
-                        key={p.id}><li>{p.title} <span>{p.category} </span></li></NavLink>)}
+                    {playersToShow.map(p => <li key={p.id}>
+                        <NavLink to={`/players/${p.id}`}>{p.title}</NavLink>
+                        <span>{p.category} </span>
+                        <button onClick={() => handleToggle(p)}>
+                            {isFavorite(p.id) ? "Rimuovi dai preferiti" : "Aggiungi ai preferiti"}
+                        </button>
+                    </li>)}
                 </ul>
             </div>
         </>
