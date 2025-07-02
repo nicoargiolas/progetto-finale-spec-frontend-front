@@ -1,4 +1,4 @@
-import { useContext, useEffect, useState } from "react";
+import { useContext, useEffect, useState, useMemo } from "react";
 import { GlobalContext } from "../context/GlobalContext";
 import { NavLink } from "react-router-dom";
 
@@ -7,6 +7,8 @@ export default function HomePage() {
     const [playersToShow, setPlayersToShow] = useState([]);
     const [searchQuery, setSearchQuery] = useState("");
     const [selectedCategory, setSelectedCategory] = useState("all");
+    const [sortOrder, setSortOrder] = useState(1);
+    const [sortBy, setSortBy] = useState("category");
 
     useEffect(() => {
         setPlayersToShow(players)
@@ -48,6 +50,29 @@ export default function HomePage() {
         }
     }
 
+    const handleSort = (rule) => {
+        if (rule === sortBy) {
+            setSortOrder(sortOrder * -1)
+        } else {
+            setSortBy(rule);
+            setSortOrder(1);
+        };
+    };
+
+    const sortedPlayers = useMemo(() => {
+        return playersToShow.sort((a, b) => {
+            let result = 0;
+
+            if (sortBy === "title") {
+                result = (a.title.localeCompare(b.title));
+            } else if (sortBy === "category") {
+                result = (a.category.localeCompare(b.category));
+            }
+
+            return result * sortOrder
+        })
+    }, [playersToShow, sortOrder, sortBy])
+
     return (
         <>
             <div>
@@ -66,6 +91,8 @@ export default function HomePage() {
                     <option value="ATP"> ATP </option>
                     <option value="WTA"> WTA </option>
                 </select>
+                <button onClick={() => handleSort("title")}> Ordina per nome </button>
+                <button onClick={() => handleSort("category")}> Ordina per categoria </button>
             </div>
             <div className="player-list">
                 <ul>

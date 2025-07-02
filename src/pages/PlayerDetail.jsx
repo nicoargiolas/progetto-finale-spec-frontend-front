@@ -61,11 +61,11 @@ export default function PlayerDetails() {
                         <li>Wimbledon: {player.grandSlamTitles.wimbledon}</li>
                         <li>US Open: {player.grandSlamTitles.usOpen}</li>
                     </ul>
-                    <div><strong>Master 1000:</strong> {player.master1000Titles}</div>
-                    <div><strong>ATP Finals:</strong> {player.atpFinalsTitles}</div>
+                    <div><strong>Master 1000:</strong> {player["1000Titles"]}</div>
+                    <div><strong>ATP Finals:</strong> {player.finalsTitles}</div>
                     <div><strong>Ori olimpici:</strong> {player.olympicGolds}</div>
-                    <div><strong>ATP 500:</strong> {player.atp500Titles}</div>
-                    <div><strong>ATP 250:</strong> {player.atp250Titles}</div>
+                    <div><strong>ATP 500:</strong> {player["500Titles"]}</div>
+                    <div><strong>ATP 250:</strong> {player["250Titles"]}</div>
 
                     <div><strong>Racchetta:</strong> {player.racket}</div>
                     <div><strong>Scarpe:</strong> {player.shoes}</div>
