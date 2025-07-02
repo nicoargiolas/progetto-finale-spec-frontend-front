@@ -2,6 +2,10 @@ import { useContext, useEffect, useState, useMemo } from "react";
 import { GlobalContext } from "../context/GlobalContext";
 import { NavLink } from "react-router-dom";
 
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faStar as solidStar } from '@fortawesome/free-solid-svg-icons';
+import { faStar as regularStar } from '@fortawesome/free-regular-svg-icons';
+
 export default function HomePage() {
     const { players, isFavorite, handleToggle } = useContext(GlobalContext);
     const [playersToShow, setPlayersToShow] = useState([]);
@@ -79,35 +83,60 @@ export default function HomePage() {
 
     return (
         <>
-            <div>
-                <input placeholder="Cerca..." type="text" value={searchQuery}
+            <div className="filter-bar">
+                <input
+                    className="search-input"
+                    placeholder="Cerca..."
+                    type="text"
+                    value={searchQuery}
                     onChange={e => {
                         setSearchQuery(e.target.value);
                         applyFilters(e.target.value, selectedCategory);
-                    }} />
-                <select value={selectedCategory}
+                    }}
+                />
+
+                <select
+                    className="category-select"
+                    value={selectedCategory}
                     onChange={e => {
                         setSelectedCategory(e.target.value);
                         applyFilters(searchQuery, e.target.value);
                     }}
                 >
-                    <option value="all"> Tutte </option>
-                    <option value="ATP"> ATP </option>
-                    <option value="WTA"> WTA </option>
+                    <option value="all">Tutte</option>
+                    <option value="ATP">ATP</option>
+                    <option value="WTA">WTA</option>
                 </select>
-                <button onClick={() => handleSort("title")}> Ordina per nome </button>
-                <button onClick={() => handleSort("category")}> Ordina per categoria </button>
+
+                <button className="sort-button" onClick={() => handleSort("title")}>
+                    Ordina per nome
+                </button>
+                <button className="sort-button" onClick={() => handleSort("category")}>
+                    Ordina per categoria
+                </button>
             </div>
+
             <div className="player-list">
-                <ul>
-                    {playersToShow.map(p => <li key={p.id}>
-                        <NavLink to={`/players/${p.id}`}>{p.title}</NavLink>
-                        <span>{p.category} </span>
-                        <button onClick={() => handleToggle(p)}>
-                            {isFavorite(p.id) ? "Rimuovi dai preferiti" : "Aggiungi ai preferiti"}
-                        </button>
-                    </li>)}
-                </ul>
+                <div className="player-list">
+                    {playersToShow.map(p => (
+                        <div
+                            key={p.id}
+                            className={`player-card ${p.category === "ATP" ? "atp" : "wta"}`}
+                        >
+                            <div className="player-info">
+                                <NavLink to={`/players/${p.id}`} className="player-name">
+                                    {p.title}
+                                </NavLink>
+                                <button className="star-button" onClick={() => handleToggle(p)}>
+                                    <FontAwesomeIcon
+                                        icon={isFavorite(p.id) ? solidStar : regularStar}
+                                        className={isFavorite(p.id) ? "favorite" : ""}
+                                    />
+                                </button>
+                            </div>
+                        </div>
+                    ))}
+                </div>
             </div>
         </>
     )
