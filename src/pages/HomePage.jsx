@@ -2,12 +2,11 @@ import { useContext, useEffect, useState, useMemo } from "react";
 import { GlobalContext } from "../context/GlobalContext";
 import { NavLink } from "react-router-dom";
 
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faStar as solidStar } from '@fortawesome/free-solid-svg-icons';
-import { faStar as regularStar } from '@fortawesome/free-regular-svg-icons';
+// Importo componenti
+import PlayerRow from "../components/PlayerRow";
 
 export default function HomePage() {
-    const { players, isFavorite, handleToggle } = useContext(GlobalContext);
+    const { players } = useContext(GlobalContext);
     const [playersToShow, setPlayersToShow] = useState([]);
     const [searchQuery, setSearchQuery] = useState("");
     const [selectedCategory, setSelectedCategory] = useState("all");
@@ -116,27 +115,9 @@ export default function HomePage() {
                 </button>
             </div>
 
+
             <div className="player-list">
-                <div className="player-list">
-                    {playersToShow.map(p => (
-                        <div
-                            key={p.id}
-                            className={`player-card ${p.category === "ATP" ? "atp" : "wta"}`}
-                        >
-                            <div className="player-info">
-                                <NavLink to={`/players/${p.id}`} className="player-name">
-                                    {p.title}
-                                </NavLink>
-                                <button className="star-button" onClick={() => handleToggle(p)}>
-                                    <FontAwesomeIcon
-                                        icon={isFavorite(p.id) ? solidStar : regularStar}
-                                        className={isFavorite(p.id) ? "favorite" : ""}
-                                    />
-                                </button>
-                            </div>
-                        </div>
-                    ))}
-                </div>
+                {playersToShow.map(p => <PlayerRow key={p.id} {...p} />)}
             </div>
         </>
     )
