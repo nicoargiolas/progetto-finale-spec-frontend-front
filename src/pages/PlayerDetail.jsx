@@ -1,6 +1,7 @@
 import { useContext, useEffect, useState } from "react";
 import { useParams, NavLink } from "react-router-dom"
 import { GlobalContext } from "../context/GlobalContext";
+import Star from "../components/Star";
 
 export default function PlayerDetails() {
     const { id } = useParams();
@@ -37,12 +38,20 @@ export default function PlayerDetails() {
     return (
         <>
             {!loading &&
-                <div className="player-detail">
-                    <button onClick={() => handleToggle(player)}>
-                        {isFavorite(player.id) ? "Rimuovi dai preferiti" : "Aggiungi ai preferiti"}
-                    </button>
+                <div className={`player-detail ${player.gender === "M" ? "male" : "female"}`}>
 
-                    <h1>{player.title}</h1>
+                    <div className="name-container">
+                        <h1>{player.title} <Star player={player} /></h1>
+                        <div>
+                            <NavLink
+                                to="/compare"
+                                state={{ player }}
+                            >
+                                <button className="compare"> Confronta </button>
+                            </NavLink>
+                        </div>
+                    </div>
+
                     <img src={player.image || '/placeholder.jpg'} alt={player.title} />
 
                     <div><strong>Ranking attuale:</strong> {player.ranking}</div>
@@ -79,15 +88,6 @@ export default function PlayerDetails() {
 
                     <div>
                         <strong>Allenatori:</strong> {player.coach.join(" & ")}
-                    </div>
-
-                    <div>
-                        <NavLink
-                            to="/compare"
-                            state={{ player }}
-                        >
-                            <button> Confronta </button>
-                        </NavLink>
                     </div>
                 </div>}
         </>

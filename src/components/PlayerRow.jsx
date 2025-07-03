@@ -7,6 +7,8 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faStar as solidStar } from '@fortawesome/free-solid-svg-icons';
 import { faStar as regularStar } from '@fortawesome/free-regular-svg-icons';
 
+import Star from "./Star";
+
 function PlayerRow(p) {
     const { isFavorite, handleToggle } = useContext(GlobalContext);
 
@@ -19,12 +21,7 @@ function PlayerRow(p) {
                     <NavLink to={`/players/${p.id}`} className="player-name">
                         {p.title}
                     </NavLink>
-                    <button className="star-button" onClick={() => handleToggle(p)}>
-                        <FontAwesomeIcon
-                            icon={isFavorite(p.id) ? solidStar : regularStar}
-                            className={isFavorite(p.id) ? "favorite" : ""}
-                        />
-                    </button>
+                    <Star player={p} />
                 </div>
             </div>
         </>
