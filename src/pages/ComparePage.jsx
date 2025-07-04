@@ -79,7 +79,8 @@ export default function ComparePage() {
                     <thead>
                         <tr>
                             <th></th>
-                            <th>
+                            <th className={`player-header`}>
+
                                 {selectedPlayer1 ? (
                                     <div>
                                         <span>{selectedPlayer1.title}</span>
@@ -99,7 +100,8 @@ export default function ComparePage() {
                                         </select>
                                     </section>}
                             </th>
-                            <th>
+                            <th className={`player-header`}>
+
                                 {selectedPlayer2 ? (
                                     <div>
                                         <span>{selectedPlayer2.title}</span>
@@ -129,17 +131,19 @@ export default function ComparePage() {
 
                             return (
                                 <tr key={key}>
-                                    <td><strong>{label}</strong></td>
+                                    <td className="value-cell"><strong>{label}</strong></td>
                                     {/* Se il valore è un array lo trasformo in stringa divisa da ", " altrimenti stampo il valore, se è null o undefined stampo "-" */}
-                                    <td>{Array.isArray(value1) ? value1.join(", ") : (value1 ?? "-")}</td>
-                                    <td>{Array.isArray(value2) ? value2.join(", ") : (value2 ?? "-")}</td>
+                                    <td className={`value-cell ${selectedPlayer1 ? (selectedPlayer1.gender === 'M' ? 'atp' : 'wta') : ''}`}>
+                                        {Array.isArray(value1) ? value1.join(", ") : (value1 ?? "-")}</td>
+                                    <td className={`value-cell ${selectedPlayer2 ? (selectedPlayer2.gender === 'M' ? 'atp' : 'wta') : ''}`}>
+                                        {Array.isArray(value2) ? value2.join(", ") : (value2 ?? "-")}</td>
                                 </tr>
                             );
                         })}
                     </tbody>
 
                 </table>
-            </div>
+            </div >
         </>
     )
 }

@@ -1,13 +1,11 @@
-import { useContext, useEffect, useState } from "react";
-import { useParams, NavLink } from "react-router-dom"
-import { GlobalContext } from "../context/GlobalContext";
+import { useEffect, useState } from "react";
+import { useParams, NavLink } from "react-router-dom";
 import Star from "../components/Star";
 
 export default function PlayerDetails() {
     const { id } = useParams();
     const [player, setPlayer] = useState({});
     const [loading, setLoading] = useState(true);
-    const { isFavorite, handleToggle } = useContext(GlobalContext);
 
     async function fetchJson(url) {
         const response = await fetch(url);

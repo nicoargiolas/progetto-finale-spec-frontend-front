@@ -271,3 +271,85 @@ main {
 .player-detail ul li {
     margin-left: 12px;
 }
+
+
+/* COMPAREPAGE */
+.compare {
+    max-width: 900px;
+    margin: 0 auto;
+    padding: 20px;
+}
+
+.compare-table {
+    width: 100%;
+    border-collapse: separate;
+    border-spacing: 0;
+    border-radius: 12px;
+    overflow: hidden;
+    background-color: #A8D5BA;
+    backdrop-filter: blur(4px);
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+    color: #222;
+}
+
+.compare-table th,
+.compare-table td {
+    padding: 14px 16px;
+    text-align: left;
+    vertical-align: middle;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.compare-table th:first-child,
+.compare-table td:first-child {
+    width: 220px;
+    font-weight: bold;
+}
+
+.value-cell {
+    width: 320px;
+    word-break: break-word;
+}
+
+.value-cell.atp {
+    background-color: #cce4ff;
+    /* celeste pastello */
+    color: #222;
+}
+
+.value-cell.wta {
+    background-color: #ffe0f0;
+    /* rosa pastello */
+    color: #222;
+}
+
+.compare-table tbody tr:nth-child(odd) td {
+    filter: brightness(0.94);
+}
+
+/* Selettori */
+.compare-table select {
+    padding: 8px 12px;
+    border-radius: 8px;
+    border: 1px solid #ccc;
+    background-color: rgba(255, 255, 255, 0.1);
+    color: white;
+    font-size: 1rem;
+}
+
+/* Pulsanti */
+.compare-table button {
+    padding: 6px 12px;
+    margin-left: 10px;
+    border: none;
+    border-radius: 8px;
+    background-color: rgba(255, 255, 255, 0.15);
+    color: white;
+    font-weight: 600;
+    cursor: pointer;
+    transition: background-color 0.2s ease;
+}
+
+.compare-table button:hover {
+    background-color: rgba(255, 255, 255, 0.25);
+}
