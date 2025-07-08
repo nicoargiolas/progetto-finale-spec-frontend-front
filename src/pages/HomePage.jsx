@@ -1,6 +1,5 @@
-import { useContext, useEffect, useState, useMemo } from "react";
+import { useContext, useEffect, useState, useMemo, useRef, useCallback } from "react";
 import { GlobalContext } from "../context/GlobalContext";
-import { NavLink } from "react-router-dom";
 
 // Importo componenti
 import PlayerRow from "../components/PlayerRow";
@@ -12,6 +11,9 @@ export default function HomePage() {
     const [selectedCategory, setSelectedCategory] = useState("all");
     const [sortOrder, setSortOrder] = useState(1);
     const [sortBy, setSortBy] = useState("category");
+
+    const inputRef = useRef();
+
 
     // FILTRI
     useEffect(() => {
@@ -54,6 +56,22 @@ export default function HomePage() {
         }
     }
 
+    // DEBOUNCED SEARCH
+    function debounce(callback, delay) {
+        let timer;
+        return (value) => {
+            clearTimeout(timer);
+            timer = setTimeout(() => {
+                callback(value)
+            }, delay)
+        }
+    };
+
+    const debouncedSearch = useCallback(debounce(() => {
+        setSearchQuery(inputRef.current.value);
+        applyFilters(inputRef.current.value, selectedCategory);
+    }, 500), []);
+
 
     // ORDINAMENTO
     const handleSort = (rule) => {
@@ -87,11 +105,8 @@ export default function HomePage() {
                     className="search-input"
                     placeholder="Cerca..."
                     type="text"
-                    value={searchQuery}
-                    onChange={e => {
-                        setSearchQuery(e.target.value);
-                        applyFilters(e.target.value, selectedCategory);
-                    }}
+                    ref={inputRef}
+                    onChange={() => debouncedSearch()}
                 />
 
                 <select
