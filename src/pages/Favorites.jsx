@@ -6,7 +6,7 @@ import { NavLink } from "react-router-dom";
 import PlayerRow from "../components/PlayerRow";
 
 export default function Favorites() {
-    const { favorites, isFavorite, handleToggle } = useContext(GlobalContext);
+    const { favorites } = useContext(GlobalContext);
 
     return (
         <>
