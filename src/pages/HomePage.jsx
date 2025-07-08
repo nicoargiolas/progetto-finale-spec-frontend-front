@@ -130,10 +130,12 @@ export default function HomePage() {
                 </button>
             </div>
 
+            {(playersToShow.length === 0) ?
+                <h2> Nessun risultato corrisponde ai criteri di ricerca </h2> :
+                (<div className="player-list">
+                    {playersToShow.map(p => <PlayerRow key={p.id} {...p} />)}
+                </div>)}
 
-            <div className="player-list">
-                {playersToShow.map(p => <PlayerRow key={p.id} {...p} />)}
-            </div>
         </>
     )
 }
