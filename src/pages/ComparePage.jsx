@@ -5,7 +5,9 @@ import { GlobalContext } from "../context/GlobalContext";
 export default function ComparePage() {
     const { players } = useContext(GlobalContext);
     const [selectedPlayer1, setSelectedPlayer1] = useState(null);
-    const [selectedPlayer2, setSelectedPlayer2] = useState(null)
+    const [selectedPlayer2, setSelectedPlayer2] = useState(null);
+    const [selectedPlayer3, setSelectedPlayer3] = useState(null);
+    const [selectedPlayer4, setSelectedPlayer4] = useState(null);
 
     // Recupero lo stato passato dalla pagina se accedo da la a questa pagina
     const location = useLocation();
@@ -121,6 +123,51 @@ export default function ComparePage() {
                                         </select>
                                     </section>}
                             </th>
+
+                            {(selectedPlayer1 && selectedPlayer2) &&
+                                (<th className={`player-header`}>
+                                    {selectedPlayer3 ? (
+                                        <div>
+                                            <span>{selectedPlayer3.title}</span>
+                                            <button onClick={() => setSelectedPlayer3(null)}> Rimuovi </button>
+                                        </div>
+                                    ) :
+                                        <section>
+                                            <select onChange={e => {
+                                                getPlayer(e.target.value).then(p => {
+                                                    setSelectedPlayer3(p)
+                                                })
+                                            }}>
+                                                <option value=""> </option>
+                                                {players.map(p => (
+                                                    <option key={p.id} value={p.id}>{p.title}</option>
+                                                ))}
+                                            </select>
+                                        </section>}
+                                </th>)}
+
+                            {(selectedPlayer1 && selectedPlayer2 && selectedPlayer3) &&
+                                (<th className={`player-header`}>
+                                    {selectedPlayer4 ? (
+                                        <div>
+                                            <span>{selectedPlayer4.title}</span>
+                                            <button onClick={() => setSelectedPlayer4(null)}> Rimuovi </button>
+                                        </div>
+                                    ) :
+                                        <section>
+                                            <select onChange={e => {
+                                                getPlayer(e.target.value).then(p => {
+                                                    setSelectedPlayer4(p)
+                                                })
+                                            }}>
+                                                <option value=""> </option>
+                                                {players.map(p => (
+                                                    <option key={p.id} value={p.id}>{p.title}</option>
+                                                ))}
+                                            </select>
+                                        </section>}
+                                </th>)}
+
                         </tr>
                     </thead>
                     <tbody>
@@ -128,6 +175,9 @@ export default function ComparePage() {
                             // Se il player è selezionato esiste accede alla proprietà richiesta, anche se è annidata, altrimenti stampa "-"
                             const value1 = selectedPlayer1 ? getNestedValue(selectedPlayer1, key) : "-";
                             const value2 = selectedPlayer2 ? getNestedValue(selectedPlayer2, key) : "-";
+                            const value3 = selectedPlayer3 ? getNestedValue(selectedPlayer3, key) : "-";
+                            const value4 = selectedPlayer4 ? getNestedValue(selectedPlayer4, key) : "-";
+
 
                             return (
                                 <tr key={key}>
@@ -137,6 +187,14 @@ export default function ComparePage() {
                                         {Array.isArray(value1) ? value1.join(", ") : (value1 ?? "-")}</td>
                                     <td className={`value-cell ${selectedPlayer2 ? (selectedPlayer2.gender === 'M' ? 'atp' : 'wta') : ''}`}>
                                         {Array.isArray(value2) ? value2.join(", ") : (value2 ?? "-")}</td>
+                                    {(selectedPlayer1 && selectedPlayer2) && (
+                                        <td className={`value-cell ${selectedPlayer3 ? (selectedPlayer3.gender === 'M' ? 'atp' : 'wta') : ''}`}>
+                                            {Array.isArray(value3) ? value3.join(", ") : (value3 ?? "-")}</td>
+                                    )}
+                                    {(selectedPlayer1 && selectedPlayer2 && selectedPlayer3) && (
+                                        <td className={`value-cell ${selectedPlayer4 ? (selectedPlayer4.gender === 'M' ? 'atp' : 'wta') : ''}`}>
+                                            {Array.isArray(value4) ? value4.join(", ") : (value4 ?? "-")}</td>
+                                    )}
                                 </tr>
                             );
                         })}
