@@ -124,7 +124,7 @@ export default function ComparePage() {
                                     </section>}
                             </th>
 
-                            {(selectedPlayer1 && selectedPlayer2) &&
+                            {((selectedPlayer1 && selectedPlayer2) || selectedPlayer3) &&
                                 (<th className={`player-header`}>
                                     {selectedPlayer3 ? (
                                         <div>
@@ -146,7 +146,7 @@ export default function ComparePage() {
                                         </section>}
                                 </th>)}
 
-                            {(selectedPlayer1 && selectedPlayer2 && selectedPlayer3) &&
+                            {((selectedPlayer1 && selectedPlayer2 && selectedPlayer3) || selectedPlayer4) &&
                                 (<th className={`player-header`}>
                                     {selectedPlayer4 ? (
                                         <div>
@@ -167,8 +167,35 @@ export default function ComparePage() {
                                             </select>
                                         </section>}
                                 </th>)}
-
                         </tr>
+                        <tr>
+                            <th></th>
+                            {selectedPlayer1 ?
+                                <th>
+                                    <img src={selectedPlayer1.image} alt={selectedPlayer1.title} />
+                                </th> :
+                                <th></th>
+                            }
+                            {selectedPlayer2 ?
+                                <th>
+                                    <img src={selectedPlayer2.image} alt={selectedPlayer2.title} />
+                                </th> :
+                                <th></th>
+                            }
+                            {selectedPlayer3 ?
+                                <th>
+                                    <img src={selectedPlayer3.image} alt={selectedPlayer3.title} />
+                                </th> :
+                                <th></th>
+                            }
+                            {selectedPlayer4 ?
+                                <th>
+                                    <img src={selectedPlayer4.image} alt={selectedPlayer4.title} />
+                                </th> :
+                                <th></th>
+                            }
+                        </tr>
+
                     </thead>
                     <tbody>
                         {fieldsToCompare.map(({ key, label }) => {
@@ -187,14 +214,18 @@ export default function ComparePage() {
                                         {Array.isArray(value1) ? value1.join(", ") : (value1 ?? "-")}</td>
                                     <td className={`value-cell ${selectedPlayer2 ? (selectedPlayer2.gender === 'M' ? 'atp' : 'wta') : ''}`}>
                                         {Array.isArray(value2) ? value2.join(", ") : (value2 ?? "-")}</td>
-                                    {(selectedPlayer1 && selectedPlayer2) && (
+                                    {selectedPlayer3 ? (
                                         <td className={`value-cell ${selectedPlayer3 ? (selectedPlayer3.gender === 'M' ? 'atp' : 'wta') : ''}`}>
                                             {Array.isArray(value3) ? value3.join(", ") : (value3 ?? "-")}</td>
-                                    )}
-                                    {(selectedPlayer1 && selectedPlayer2 && selectedPlayer3) && (
+                                    ) :
+                                        <td></td>
+                                    }
+                                    {selectedPlayer4 ? (
                                         <td className={`value-cell ${selectedPlayer4 ? (selectedPlayer4.gender === 'M' ? 'atp' : 'wta') : ''}`}>
                                             {Array.isArray(value4) ? value4.join(", ") : (value4 ?? "-")}</td>
-                                    )}
+                                    ) :
+                                        <td></td>
+                                    }
                                 </tr>
                             );
                         })}

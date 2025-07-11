@@ -50,7 +50,7 @@ export default function PlayerDetails() {
                         </div>
                     </div>
 
-                    <img src={player.image || '/placeholder.jpg'} alt={player.title} />
+                    <img src={player.image} alt={player.title} />
 
                     <div><strong>Ranking attuale:</strong> {player.ranking}</div>
                     <div><strong>Best Ranking:</strong> {player.bestRanking}</div>
