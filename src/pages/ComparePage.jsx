@@ -80,7 +80,7 @@ export default function ComparePage() {
                 <table className="compare-table">
                     <thead>
                         <tr>
-                            <th></th>
+                            <th className={`player-header`}></th>
                             <th className={`player-header`}>
 
                                 {selectedPlayer1 ? (
