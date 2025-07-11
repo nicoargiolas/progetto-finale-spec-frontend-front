@@ -1,16 +1,11 @@
-import { memo, useContext } from "react";
+import { memo } from "react";
 import { NavLink } from 'react-router-dom';
-
-import { GlobalContext } from "../context/GlobalContext";
-
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faStar as solidStar } from '@fortawesome/free-solid-svg-icons';
-import { faStar as regularStar } from '@fortawesome/free-regular-svg-icons';
 
 import Star from "./Star";
 
+// Funzione PlayerRow che prende il player
+// Utilizzata nella Home e in Favorites
 function PlayerRow(p) {
-    const { isFavorite, handleToggle } = useContext(GlobalContext);
 
     return (
         <>
@@ -28,4 +23,5 @@ function PlayerRow(p) {
     )
 }
 
+// Esporto con memo per evitare render inutili
 export default memo(PlayerRow)

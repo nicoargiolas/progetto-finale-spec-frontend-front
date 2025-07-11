@@ -5,6 +5,7 @@ import { GlobalContext } from "../context/GlobalContext";
 import PlayerRow from "../components/PlayerRow";
 
 export default function Favorites() {
+    // Prendo i favorites dal context
     const { favorites } = useContext(GlobalContext);
 
     return (

@@ -3,6 +3,7 @@ import { NavLink } from "react-router-dom";
 export default function Header() {
     return (
         <>
+            {/* Header diviso in due: parte sinistra i link e parte destra il logo */}
             <header>
                 <div className="header-left">
                     <NavLink to={"/"} className="nav-link"><h3> HOME </h3></NavLink>

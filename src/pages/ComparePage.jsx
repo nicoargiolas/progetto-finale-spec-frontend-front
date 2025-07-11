@@ -3,11 +3,18 @@ import { useLocation } from "react-router-dom";
 import { GlobalContext } from "../context/GlobalContext";
 
 export default function ComparePage() {
+    // Players dal context
     const { players } = useContext(GlobalContext);
+
+    // Stati per i giocatori selezionati
     const [selectedPlayer1, setSelectedPlayer1] = useState(null);
     const [selectedPlayer2, setSelectedPlayer2] = useState(null);
     const [selectedPlayer3, setSelectedPlayer3] = useState(null);
     const [selectedPlayer4, setSelectedPlayer4] = useState(null);
+
+    // Ho deciso di poter selezionare massimo 4 giocatori e l'ho gestita così anche perché ho fatto queste cose passo passo
+    // Per rendere il codice più DRY potevo usare un array di giocatori e gestire quello usando un map nel jsx sottostante
+    // DA MODIFICARE
 
     // Recupero lo stato passato dalla pagina se accedo da la a questa pagina
     const location = useLocation();
@@ -82,15 +89,17 @@ export default function ComparePage() {
                         <tr>
                             <th className={`player-header`}></th>
                             <th className={`player-header`}>
-
+                                {/* Se il giocatore è selezionato mostro nome e bottone rimuovi */}
                                 {selectedPlayer1 ? (
                                     <div>
                                         <span>{selectedPlayer1.title}</span>
                                         <button onClick={() => setSelectedPlayer1(null)}> Rimuovi </button>
                                     </div>
                                 ) :
+                                    // Altrimenti una select con la lista dei giocatori
                                     <section>
                                         <select onChange={e => {
+                                            // All'onChange eseguo getPlayer e setto il player
                                             getPlayer(e.target.value).then(p => {
                                                 setSelectedPlayer1(p)
                                             })
@@ -102,6 +111,7 @@ export default function ComparePage() {
                                         </select>
                                     </section>}
                             </th>
+                            {/* Identico per player2 */}
                             <th className={`player-header`}>
 
                                 {selectedPlayer2 ? (
@@ -124,6 +134,7 @@ export default function ComparePage() {
                                     </section>}
                             </th>
 
+                            {/* Qua ho aggiunto una condizione: se sono selezionati i primi due giocatori o è selezionato il terzo visualizzo la colonna */}
                             {((selectedPlayer1 && selectedPlayer2) || selectedPlayer3) &&
                                 (<th className={`player-header`}>
                                     {selectedPlayer3 ? (
@@ -146,6 +157,7 @@ export default function ComparePage() {
                                         </section>}
                                 </th>)}
 
+                            {/* Idem al terzo ma devono essere selezionati i primi 3 */}
                             {((selectedPlayer1 && selectedPlayer2 && selectedPlayer3) || selectedPlayer4) &&
                                 (<th className={`player-header`}>
                                     {selectedPlayer4 ? (
@@ -168,6 +180,7 @@ export default function ComparePage() {
                                         </section>}
                                 </th>)}
                         </tr>
+                        {/* Nella seconda riga del thead sono presenti le immagini in caso il giocatore sia selezionato */}
                         <tr>
                             <th></th>
                             {selectedPlayer1 ?
@@ -195,8 +208,9 @@ export default function ComparePage() {
                                 <th></th>
                             }
                         </tr>
-
                     </thead>
+
+
                     <tbody>
                         {fieldsToCompare.map(({ key, label }) => {
                             // Se il player è selezionato esiste accede alla proprietà richiesta, anche se è annidata, altrimenti stampa "-"
@@ -210,10 +224,14 @@ export default function ComparePage() {
                                 <tr key={key}>
                                     <td className="value-cell"><strong>{label}</strong></td>
                                     {/* Se il valore è un array lo trasformo in stringa divisa da ", " altrimenti stampo il valore, se è null o undefined stampo "-" */}
+                                    {/* Prime due colonne senza condizioni per mostrare o meno */}
+                                    {/* Colorazione dinamica in base al sesso */}
                                     <td className={`value-cell ${selectedPlayer1 ? (selectedPlayer1.gender === 'M' ? 'atp' : 'wta') : ''}`}>
                                         {Array.isArray(value1) ? value1.join(", ") : (value1 ?? "-")}</td>
                                     <td className={`value-cell ${selectedPlayer2 ? (selectedPlayer2.gender === 'M' ? 'atp' : 'wta') : ''}`}>
                                         {Array.isArray(value2) ? value2.join(", ") : (value2 ?? "-")}</td>
+
+                                    {/* Se è selezionato il player mostro inserisco il contenuto altrimenti cella vuota */}
                                     {selectedPlayer3 ? (
                                         <td className={`value-cell ${selectedPlayer3 ? (selectedPlayer3.gender === 'M' ? 'atp' : 'wta') : ''}`}>
                                             {Array.isArray(value3) ? value3.join(", ") : (value3 ?? "-")}</td>

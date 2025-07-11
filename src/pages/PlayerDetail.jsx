@@ -3,8 +3,12 @@ import { useParams, NavLink } from "react-router-dom";
 import Star from "../components/Star";
 
 export default function PlayerDetails() {
+    // Prendo l'id dall'url
     const { id } = useParams();
+
+    // Stati
     const [player, setPlayer] = useState({});
+    // Utilizzo loading perché c'era il problema che il componente venisse montato prima del termine della chiamata
     const [loading, setLoading] = useState(true);
 
     async function fetchJson(url) {
@@ -13,6 +17,7 @@ export default function PlayerDetails() {
         return data
     }
 
+    // Funzione getPlayer che effettua la chiamata per prendere il singolo giocatore tramite id
     async function getPlayer(id) {
         setLoading(true);
         try {
@@ -29,17 +34,21 @@ export default function PlayerDetails() {
         }
     }
 
+    // Eseguo getPlayer al montaggio del componente
     useEffect(() => {
         getPlayer(id)
     }, []);
 
     return (
         <>
+            {/* Se loading è false visualizzo la scheda del giocatore */}
             {!loading &&
                 <div className={`player-detail ${player.gender === "M" ? "male" : "female"}`}>
 
                     <div className="name-container">
+                        {/* Utilizzo componente Star per toggle preferiti */}
                         <h1>{player.title} <Star player={player} /></h1>
+                        {/* Se clicco su confronta passo alla pagina compare passando come stato il giocatore che poi verrà settato come primo giocatore della tabella */}
                         <div>
                             <NavLink
                                 to="/compare"
